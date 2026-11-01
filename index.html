@@ -1,0 +1,139 @@
+<!-- 문서 종류를 HTML5로 선언합니다. -->
+<!DOCTYPE html>
+
+<!-- 문서의 기본 언어를 한국어(ko)로 설정합니다. -->
+<html lang="ko">
+
+<!-- 웹페이지의 헤드 영역 시작 부분입니다. -->
+<head>
+
+    <!-- 문자 인코딩을 UTF-8로 지정하여 한글 깨짐을 방지합니다. -->
+    <meta charset="UTF-8">
+
+    <!-- 모바일 및 다양한 기기 화면 크기에 맞게 뷰포트를 설정합니다. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 브라우저 탭에 표시될 웹페이지의 제목을 설정합니다. -->
+    <title>NASA 우주 정보 대시보드</title>
+
+    <!-- 외부 CSS 스타일시트 파일(style.css)을 연결합니다. -->
+    <link rel="stylesheet" href="style.css">
+
+<!-- 헤드 영역의 끝 부분입니다. -->
+</head>
+
+<!-- 웹페이지의 바디 영역 시작 부분입니다. -->
+<body>
+
+    <!-- 우주 별빛 배경을 그리기 위한 HTML5 Canvas 요소입니다. -->
+    <canvas id="space-bg"></canvas>
+
+    <!-- 전체 콘텐츠를 가운데 정렬하고 감싸주는 컨테이너 박스입니다. -->
+    <div class="container">
+
+        <!-- 페이지 최상단 메인 제목입니다. -->
+        <h1>NASA 우주 정보 대시보드</h1>
+
+        <!-- 1. 오늘의 천문사진(APOD)을 보여주는 첫 화면 섹션 영역입니다. -->
+        <section class="screen-section">
+
+            <!-- APOD 섹션의 소제목입니다. -->
+            <h2>오늘의 천문사진 (APOD)</h2>
+
+            <!-- 데이터를 로딩할 때 보여줄 로딩 안내 문구입니다. -->
+            <div id="apod-loading" class="loading">천문사진을 불러오는 중...</div>
+
+            <!-- APOD 카드 형태로 사진, 제목, 설명이 들어갈 감싸는 영역입니다. (처음엔 숨김) -->
+            <div id="apod-container" class="apod-card" style="display: none;">
+
+                <!-- 이미지 또는 동영상 미디어가 삽입될 영역입니다. -->
+                <div id="apod-media"></div>
+
+                <!-- 천문사진의 제목이 표시될 영역입니다. -->
+                <div id="apod-title" class="apod-title"></div>
+
+                <!-- 촬영 일자가 표시될 영역입니다. -->
+                <div id="apod-date" class="apod-date"></div>
+
+                <!-- 한국어로 번역된 천문사진 상세 설명이 표시될 영역입니다. -->
+                <div id="apod-explanation" class="apod-explanation"></div>
+
+            <!-- APOD 카드 영역의 끝입니다. -->
+            </div>
+
+            <!-- 하단으로 스크롤을 유도하는 안내 화살표 영역입니다. -->
+            <div class="scroll-indicator">
+
+                <!-- 스크롤 유도 문구입니다. -->
+                <span>↓ 스크롤하여 근지구 소행성 현황 보기 ↓</span>
+
+            <!-- 스크롤 유도 영역의 끝입니다. -->
+            </div>
+
+        <!-- APOD 섹션의 끝입니다. -->
+        </section>
+
+        <!-- 2. 근지구 소행성(NEO) 정보를 보여주는 섹션 영역입니다. -->
+        <section class="neo-section">
+
+            <!-- 근지구 소행성 섹션의 소제목입니다. -->
+            <h2>오늘의 근지구 소행성 현황</h2>
+
+            <!-- 소행성 정렬 옵션을 선택하는 드롭다운 컨테이너입니다. -->
+            <div class="filter-container">
+
+                <!-- 드롭다운 필터 앞 라벨 텍스트입니다. -->
+                <label for="sort-select" class="filter-label">정렬 기준:</label>
+
+                <!-- 사용자가 정렬 옵션을 선택할 수 있는 select 요소입니다. -->
+                <select id="sort-select" class="sort-select">
+
+                    <!-- 접근 거리 기준 먼 순서 정렬 옵션입니다. -->
+                    <option value="distance-desc">지구 접근 거리순 (먼 순)</option>
+
+                    <!-- 접근 거리 기준 가까운 순서 정렬 옵션입니다. -->
+                    <option value="distance-asc">지구 접근 거리순 (가까운 순)</option>
+
+                    <!-- 추정 크기 기준 큰 순서 정렬 옵션입니다. -->
+                    <option value="size-desc">크기순 (큰 순)</option>
+
+                    <!-- 추정 크기 기준 작은 순서 정렬 옵션입니다. -->
+                    <option value="size-asc">크기순 (작은 순)</option>
+
+                    <!-- 이동 속도 기준 빠른 순서 정렬 옵션입니다. -->
+                    <option value="speed-desc">이동 속도순 (빠른 순)</option>
+
+                    <!-- 이동 속도 기준 느린 순서 정렬 옵션입니다. -->
+                    <option value="speed-asc">이동 속도순 (느린 순)</option>
+
+                    <option value="hazard-desc">위험도순 (위험 소행성 우선)</option>
+
+                <!-- select 요소의 끝입니다. -->
+                </select>
+
+            <!-- 정렬 필터 컨테이너의 끝입니다. -->
+            </div>
+
+            <!-- 소행성 데이터 로딩 안내 문구입니다. -->
+            <div id="neo-loading" class="loading">소행성 데이터를 불러오는 중...</div>
+
+            <!-- 소행성 카드가 리스트 형태로 동적 생성될 ul 요소입니다. -->
+            <ul id="neo-list"></ul>
+
+        <!-- 근지구 소행성 섹션의 끝입니다. -->
+        </section>
+
+    <!-- 전체 컨테이너의 끝입니다. -->
+    </div>
+
+    <!-- 우주 배경 애니메이션을 처리하는 자바스크립트 파일입니다. -->
+    <script src="background.js"></script>
+
+    <!-- API 통신 및 데이터 처리 자바스크립트 파일입니다. -->
+    <script src="main.js"></script>
+
+<!-- 바디 영역의 끝 부분입니다. -->
+</body>
+
+<!-- HTML 문서의 끝입니다. -->
+</html>
