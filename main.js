@@ -113,19 +113,19 @@ async function getAPOD() {
             const imageUrl = data.hdurl || data.url;
 
             apodMedia.innerHTML = `
-                <a
-                    href="${imageUrl}"
-                    target="_blank"
-                    rel="noopener noreferrer"
+            <a
+                href="${data.permalink || "https://apod.nasa.gov/apod/astropix.html"}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <img
+                    src="${imageUrl}"
+                    alt="${data.alt || data.title || "오늘의 천문사진"}"
+                    loading="eager"
+                    style="cursor: pointer;"
                 >
-                    <img
-                        src="${imageUrl}"
-                        alt="${data.alt || data.title || "오늘의 천문사진"}"
-                        loading="eager"
-                        style="cursor: pointer;"
-                    >
-                </a>
-            `;
+            </a>
+        `;
 
             const image = apodMedia.querySelector("img");
 
